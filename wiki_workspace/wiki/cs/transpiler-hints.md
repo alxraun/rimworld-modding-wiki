@@ -1,4 +1,3 @@
-
 ## Transpiler Hints - Cheat Sheet
 
 **Debugging Transpilers:**
@@ -55,4 +54,3 @@ public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstructio
 - Utilize the provided code snippet to output and analyze generated IL code.
 - Inspect the output for correctness, especially instruction counting and opcode sequences.
 - Search GitHub for example transpilers to understand implementation patterns.
-```

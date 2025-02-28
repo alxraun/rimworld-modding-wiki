@@ -1,4 +1,3 @@
-
 ## Harmony Cheat Sheet
 
 **Harmony:** Runtime patching library for .NET/Mono methods in RimWorld. Best practice for code modification.
@@ -57,4 +56,3 @@
 - [Harmony 2 NuGet](https://www.nuget.org/packages/Lib.Harmony/)
 - [Harmony 2 Docs](https://harmony.pardeike.net/)
 - [Alien Races HarmonyPatches Example](https://github.com/RimWorld-CCL-Reborn/AlienRaces/blob/master/Source/AlienRace/AlienRace/HarmonyPatches.cs)
-```

@@ -1,4 +1,3 @@
-
 ## XML Patches - Cheat Sheet
 
 **Purpose:** Modify existing game XML Defs without overwriting.
@@ -90,4 +89,3 @@
 - XPath must be precise.
 - PatchOperationSequence can hide errors; test operations individually.
 - Avoid overuse of `success="Always"` in PatchOperationSequence.
-```

@@ -1,4 +1,3 @@
-
 ## ConfigErrors - Developer Cheat Sheet
 
 **Purpose:**
@@ -92,4 +91,3 @@ public static void ValidateMyTypes()
 - `yield return`: Return single error message in `IEnumerable<string>`.
 - String Interpolation (`$"{}"`): Embed variables in error messages.
 - `nameof(variable)`: Get variable name as string for error messages.
-```

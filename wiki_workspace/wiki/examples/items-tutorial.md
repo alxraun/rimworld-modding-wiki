@@ -1,4 +1,3 @@
-
 ## Modding Tutorials/Items - Cheat Sheet
 
 **Goal:** Create a simple resource item mod (Titanium example).
@@ -88,4 +87,3 @@
 - Use `ParentName` for inheritance.
 - Define key tags (`defName`, `label`, `description`, `texturePath`, etc.).
 - Test using Development mode.
-```

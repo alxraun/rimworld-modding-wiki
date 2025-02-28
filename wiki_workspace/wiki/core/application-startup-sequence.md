@@ -1,4 +1,3 @@
-
 ## RimWorld Application Startup Sequence - Cheat Sheet
 
 **Root Method:** `Verse.PlayDataLoader.LoadAllPlayData(bool)` (called by `Verse.Root.Start()`)
@@ -45,3 +44,4 @@
 38. **Force garbage collection:** Memory cleanup (`RimWorld.IO.AbstractFilesystem.ClearAllCache()`, `System.GC.Collect(...)`).
 
 **Warning:** Do not Harmony patch these methods for custom loading. Use appropriate methods instead. Consult #mod-development on RimWorld Discord for load issue questions.
+

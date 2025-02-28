@@ -1,4 +1,3 @@
-
 ## Writing Custom Code - Cheat Sheet
 
 **Purpose:**
@@ -58,4 +57,3 @@
 - C# & XML Linking: Bridge between code and content definition.
 - Debugging: Use decompiled code for reference; ask for help in modding communities.
 - Compilation: Ensure correct .NET Framework and output settings.
-```

@@ -1,4 +1,3 @@
-
 ## GameComponent, WorldComponent, MapComponent - Cheat Sheet
 
 **General Component Info:**
@@ -63,4 +62,3 @@
 - Choose component type based on scope (Game > World > Map > Thing).
 - Override methods as needed for desired behavior.
 - For data persistence, implement `ExposeData`.
-```

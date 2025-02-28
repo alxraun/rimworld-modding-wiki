@@ -1,4 +1,3 @@
-
 ## Modding Tutorials/Flooring - Cheat Sheet
 
 **Goal:** Create custom flooring using XML.
@@ -79,4 +78,3 @@
     - Enable dev mode and your mod.
     - Check for errors.
     - Load game and find your flooring in the Structure menu (or specified `DesignationCategory`).
-```

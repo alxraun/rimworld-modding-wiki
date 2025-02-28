@@ -1,4 +1,3 @@
-
 ## ThingDef - Cheat Sheet
 
 **Purpose of ThingDef:**
@@ -44,4 +43,3 @@
 - Decompilation and code analysis are essential for understanding tag behavior.
 - `DefModExtension` is recommended for adding custom data/functionality to ThingDefs.
 - No comprehensive tag documentation exists - rely on code analysis and community resources.
-```

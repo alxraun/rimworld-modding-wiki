@@ -1,4 +1,3 @@
-
 ## Quest Modding - Cheat Sheet
 
 **Overview:**
@@ -43,4 +42,3 @@
 4. **Slate Population:** `QuestGen.slate` populated with initial `Slate` values (Map, points).
 5. **QuestNode Execution:** `QuestNode` call stack: `QuestGen.Generate()` -> `(QuestScriptDef)root.Run()` -> `(QuestNode)root.Run()` -> `(QuestNode)this.RunInt()`.
 6. **Quest Finalization:** `QuestPart`s populated, `Quest` fully generated and available.
-```

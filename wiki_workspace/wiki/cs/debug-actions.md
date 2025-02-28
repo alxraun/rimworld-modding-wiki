@@ -1,4 +1,3 @@
-
 ## DebugActions - Cheat Sheet
 
 **Purpose:**
@@ -46,3 +45,4 @@
 
 **Note:**
 - Decompile RimWorld to find more `DebugAction` examples.
+

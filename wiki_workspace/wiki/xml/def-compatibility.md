@@ -94,4 +94,3 @@ Using `PatchOperationFindMod` for mod compatibility:
 - **Use `recipeUsers`/`recipes`/`recipeMaker`:** For linking recipes and buildings.
 - **Use `wildBiomes`:** For adding animals to biomes.
 - **Use `MayRequire`/`MayRequireAnyOf`:** For conditional content loading based on DLCs/mods.
-```

@@ -1,4 +1,3 @@
-
 ## Localization - Cheat Sheet
 
 **Language Files:**
@@ -43,4 +42,3 @@
 - `Translate()` Method:  Used in C# to access keyed strings.
 - String Arguments:  Inject dynamic content into translations.
 - Prefixes: Use mod-specific prefixes for Keyed strings to avoid conflicts.
-```

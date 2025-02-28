@@ -1,4 +1,3 @@
-
 ## Assembly Modding Example - Cheat Sheet
 
 **Description:**
@@ -36,3 +35,4 @@
 3. **Goal:** Create a dark matter generator mod.
 
 **Note:** Finished mod with power generator included in the project.
+

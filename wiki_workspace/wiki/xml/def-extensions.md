@@ -154,4 +154,3 @@ bool value = def.GetModExtension<YourModExtension>().yourBoolField;
   - XML: Use `<modExtensions><li>` with `Class` attribute to specify your extension class.
   - Access in Code: `def.GetModExtension<YourModExtension>().fieldName`.
   - Patching: `PatchOperationAddModExtension` for adding via patches.
-``` 

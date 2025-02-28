@@ -1,4 +1,3 @@
-
 ## Basic Melee Weapon Modding - Cheat Sheet
 
 **Goal:** Create a simple machete melee weapon mod with custom texture and stat bonus.
@@ -87,4 +86,3 @@ Mods
 - Use `CutoutComplex` shader for texture masks.
 - `packageId` in `About.xml` must be unique.
 - Check troubleshooting guide and RimWorld Discord for errors.
-```

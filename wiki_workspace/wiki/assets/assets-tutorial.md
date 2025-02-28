@@ -36,3 +36,4 @@
 **Note:**
 
 - Use [Recommended graphics software](https://rimworldwiki.com/wiki/Modding_Tutorials/Recommended_software#Graphics_Software) for editing extracted assets.
+

@@ -1,4 +1,3 @@
-
 ## Smelter Modding - Cheat Sheet
 
 **Concept:** Create a Smelter building to process slag debris into metal.
@@ -133,4 +132,3 @@
 - Check for errors in `Player.log`.
 - Ensure DefNames are unique.
 - Reboot game and mod list to refresh data.
-```

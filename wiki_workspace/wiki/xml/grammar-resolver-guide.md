@@ -1,4 +1,3 @@
-
 ## GrammarResolver - Cheat Sheet
 
 **Purpose:**
@@ -83,4 +82,3 @@
     - `pawn`: Pawn to resolve symbols against.
     - `KEY`: Symbol key.
 - Supported keywords: `nameFull`, `nameShort`, `nameShortDef`, `definite`, `nameShortIndef`, `indefinite`, `pronoun`, `possessive`, `objective`, `factionName`, `kind`, `title`.
-```

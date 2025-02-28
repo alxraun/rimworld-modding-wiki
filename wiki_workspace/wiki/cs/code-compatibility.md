@@ -55,3 +55,4 @@ catch (TypeLoadException ex) { }
 - Use this manual patching approach for optional compatibility with other DLL mods.
 - Prefer patching against `FileVersion` if versioning is needed.
 - Consider not referencing specific versions at all for more robust compatibility.
+

@@ -1,4 +1,3 @@
-
 ## Modding Tutorials/Testing Mods - Cheat Sheet
 
 **Debug Modes:**
@@ -55,4 +54,3 @@
     - TDBug (AlexTD/Uuugggg): Debugging tools.
     - 4M Mehni's Misc Modifications (Mehni): Various utilities.
     - Create custom tools for specific needs.
-```

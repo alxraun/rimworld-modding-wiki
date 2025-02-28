@@ -1,4 +1,3 @@
-
 ## ModSettings - Cheat Sheet
 
 **Purpose:**
@@ -92,4 +91,3 @@
 - `Widgets`: Alternative GUI class with more control.
 - `Rect`: Unity struct for GUI element positioning.
 - `Translator`: For localization (`"StringKey".Translate()`).
-```

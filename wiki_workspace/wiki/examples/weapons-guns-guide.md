@@ -1,4 +1,3 @@
-
 ## Modding Tutorials/Weapons Guns - Cheat Sheet
 
 **BaseGun and BaseBullet Parents:**
@@ -114,3 +113,4 @@
 
 - **Miss Radius (Forced Miss):**
     - `<verbs><li><forcedMissRadius>2.0</forcedMissRadius></verbs>`: Forces a miss radius even with accuracy.
+

@@ -68,3 +68,4 @@
 - Activation: In-game Mods menu, restart required.
 - Compatibility: Potential conflicts with large mod lists or overlapping mods.
 - Mod Types Impact: Cosmetic (visuals), UI (interface), Game Changes (mechanics). 
+

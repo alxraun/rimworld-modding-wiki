@@ -40,3 +40,4 @@
     - Single texture with body-type based offsets.
     - Utility-slot items only.
     - Texture requirements same as headwear (3+1, or 6+2 with masks).
+

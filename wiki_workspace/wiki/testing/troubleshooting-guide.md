@@ -1,4 +1,3 @@
-
 ## Modding Troubleshooting - Cheat Sheet
 
 **Common XML Errors:**
@@ -52,4 +51,3 @@
 - Look for mod namespace, class, and method names in the stacktrace.
 - Trace back the method calls to understand the error context.
 - Use decompilers to examine the code at fault.
-```

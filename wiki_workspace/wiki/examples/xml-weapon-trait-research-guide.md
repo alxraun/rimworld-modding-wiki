@@ -1,4 +1,3 @@
-
 ## XML Modding - Adding Weapons, Traits, Research - Cheat Sheet
 
 **Goal:** Add a new weapon, trait, and research project to RimWorld using XML.
@@ -138,4 +137,3 @@
 - Use code snippets for faster XML creation (VSCode recommended).
 - Experiment and reference Vanilla XML for further customization.
 - Test mod in-game using Dev mode.
-```

@@ -1,4 +1,3 @@
-
 ## Xenotypes - Cheat Sheet
 
 **XenotypeDef Template:**
@@ -77,4 +76,3 @@
 - Memes (`<xenotypeSet>`).
 - Summed during pawn generation.
 - PawnKindDef Flag: `<useFactionXenotypes>false</useFactionXenotypes>` to ignore faction's xenotypeSet.
-```

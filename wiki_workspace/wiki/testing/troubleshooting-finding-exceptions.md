@@ -1,4 +1,3 @@
-
 ## Troubleshooting - Finding Exceptions Cheat Sheet
 
 **For Modders Facing Exceptions (NRE Example):**
@@ -51,4 +50,3 @@
 - Decompilers are essential for examining game code and pinpointing error sources.
 - Focus on the relevant part of the stack trace (your mod's namespace).
 - Use null checks defensively in your code.
-```

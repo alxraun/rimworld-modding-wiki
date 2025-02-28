@@ -1,4 +1,3 @@
-
 ## Useful RimWorld Classes for Modders - Cheat Sheet
 
 **Requirements:**
@@ -62,4 +61,3 @@
 - **Pair<T1, T2>:** - Generic key-value pair (legacy, consider tuples).
 
 - **Rand:** - Random number generation (use with care in multiplayer).
-```

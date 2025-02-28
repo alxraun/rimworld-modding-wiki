@@ -1,4 +1,3 @@
-
 ## Basic Plant Modding - Cheat Sheet
 
 **Goal:** Create a custom plant (theragold), raw food item, and herbal medicine recipe using XML.
@@ -166,4 +165,3 @@
 - Enable mod in Mod Manager.
 - Use Dev Mode to spawn plant/raw food, check recipes at workbenches.
 - Verify plant spawning in specified biomes (if applicable).
-```

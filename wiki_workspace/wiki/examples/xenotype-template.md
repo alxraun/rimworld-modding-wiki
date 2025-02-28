@@ -1,4 +1,3 @@
-
 ## Xenotype Template & Pawn Generation - Cheat Sheet
 
 **Xenotype Template (`XenotypeDef`):**
@@ -73,4 +72,3 @@
 - Use `MayRequire="Ludeon.RimWorld.Biotech"` for Biotech DLC genes/xenotypes.
 - Refer to template for gene lists (Visual, Stat, Unique).
 - Choose probabilities or weights based on desired distribution and baseliner inclusion.
-```

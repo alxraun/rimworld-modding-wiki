@@ -1,4 +1,3 @@
-
 ## Modding Tutorials/Translation - Cheat Sheet
 
 **Language Files:**
@@ -35,4 +34,3 @@
 - Prefix String Keys: To ensure uniqueness and avoid conflicts.
 - Use `Translate()`: In C# to use Keyed strings.
 - Indexed Arguments: For dynamic strings in Keyed files `{0}`, `{1}`, etc.
-```
