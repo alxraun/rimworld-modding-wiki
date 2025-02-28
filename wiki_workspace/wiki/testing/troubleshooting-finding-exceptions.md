@@ -1,4 +1,4 @@
-```markdown
+
 ## Troubleshooting - Finding Exceptions Cheat Sheet
 
 **For Modders Facing Exceptions (NRE Example):**

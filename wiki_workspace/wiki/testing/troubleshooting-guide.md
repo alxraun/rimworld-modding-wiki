@@ -1,4 +1,4 @@
-```markdown
+
 ## Modding Troubleshooting - Cheat Sheet
 
 **Common XML Errors:**

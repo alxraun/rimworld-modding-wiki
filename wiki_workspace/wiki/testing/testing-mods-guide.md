@@ -1,4 +1,4 @@
-```markdown
+
 ## Modding Tutorials/Testing Mods - Cheat Sheet
 
 **Debug Modes:**
