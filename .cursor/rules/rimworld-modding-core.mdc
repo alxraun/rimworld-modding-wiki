@@ -53,14 +53,18 @@ alwaysApply: false
 
 - `<modVersion>1.0</modVersion>` / `<modVersion IgnoreIfNoMatchingField="True">1.0</modVersion>`
     - Mod version string for personal tracking.
-    - Introduced in RimWorld 1.4.
     - `IgnoreIfNoMatchingField="True"` for older versions compatibility.
 
-- `<modIconPath>Path/To/Icon</modIconPath>` / `<modIconPath IgnoreIfNoMatchingField="True">Path/To/Icon</modIconPath>`
+- `<modIconPath IgnoreIfNoMatchingField="True">Path/To/Icon</modIconPath>`
     - Mod icon path (loading screens).
     - 32x32 PNG, limited colors.
-    - RimWorld 1.5+ auto-loads `About/ModIcon.png`.
-    - `IgnoreIfNoMatchingField="True"` for older versions compatibility.
+
+- **ModIcon.png:**
+    - Simply place a file named `ModIcon.png` in your `About` folder.
+    - Will be automatically loaded during game startup.
+    - Should be small (32x32 or 64x64 pixels).
+    - Avoid too much detail - use flat colors or subtle gradients to prevent compression artifacts.
+    - No XML configuration needed.
 
 - `<url>https://mod-url</url>`
     - Web link for mod info (Steam Workshop, GitHub, etc.).
@@ -108,7 +112,6 @@ alwaysApply: false
 
 - `<incompatibleWithByVersion><v1.4><li>packageId</li></v1.4></incompatibleWithByVersion>`
     - Version-specific `incompatibleWith`.
-
 
 ```````
 
@@ -161,7 +164,6 @@ alwaysApply: false
 38. **Force garbage collection:** Memory cleanup (`RimWorld.IO.AbstractFilesystem.ClearAllCache()`, `System.GC.Collect(...)`).
 
 **Warning:** Do not Harmony patch these methods for custom loading. Use appropriate methods instead. Consult #mod-development on RimWorld Discord for load issue questions.
-
 
 ```````
 
@@ -240,7 +242,6 @@ alwaysApply: false
 - `Core` & DLC folders: Similar to mod folders.
 - `Source` folder: For sharing source code; GitHub recommended.
 
-
 ```````
 
 `\\?\C:\Projects\rimworld\wiki_workspace\wiki\core\modding-fundamentals.md`:
@@ -316,6 +317,5 @@ alwaysApply: false
 - Activation: In-game Mods menu, restart required.
 - Compatibility: Potential conflicts with large mod lists or overlapping mods.
 - Mod Types Impact: Cosmetic (visuals), UI (interface), Game Changes (mechanics). 
-
 
 ```````

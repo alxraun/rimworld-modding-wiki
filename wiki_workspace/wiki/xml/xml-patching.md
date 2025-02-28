@@ -119,11 +119,15 @@
 - **PatchOperationFindMod**: 
   - Conditional operations based on mod/DLC presence
   - Uses mod `name`, not `packageId`
+  - Include DLC names for DLC-specific patches
   - Example:
   ```xml
   <Operation Class="PatchOperationFindMod">
     <mods>
       <li>Royalty</li>
+      <li>Ideology</li>
+      <li>Biotech</li>
+      <li>Anomaly</li>
     </mods>
     <match>
       <!-- Operations if mod is present -->
@@ -186,6 +190,10 @@
 - **Reference Vanilla XML:** Locate values for patching in game files (`Data` folder)
 - **Test Patches Incrementally:** Start with simple patches and build complexity
 - **Check Player.log:** For patch errors and debugging
+- **Class Name Changes:** Some classes have been renamed in recent versions:
+  - `ManhunterPackIncidentUtility` → `AggressiveAnimalIncidentUtility`
+  - `IncidentWorker_ManhunterPack` → `IncidentWorker_AggressiveAnimals`
+  - If patching incident workers, use the new class names.
 
 ## Common Issues / Troubleshooting:
 
@@ -201,4 +209,4 @@
 - PatchOperationTest & `<success>` tag in `PatchOperationSequence` are obsolete; use `PatchOperationConditional`
 - `<success>` options: `Always` (suppress errors - generally avoid), `Normal`, `Invert`, `Never`
 - `MayRequire` in `PatchOperationSequence` child operations for conditional loading
-- PatchOperationFindMod uses mod `name`, not `packageId` 
+- PatchOperationFindMod uses mod `name`, not `packageId`

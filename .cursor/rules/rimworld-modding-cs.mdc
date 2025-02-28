@@ -6,12 +6,7 @@ alwaysApply: false
 `\\?\C:\Projects\rimworld\wiki_workspace\wiki\cs\assembly-modding-example.md`:
 
 ```````md
-## Assembly Modding Example - Cheat Sheet
-
-**Description:**
-
-- Tutorial: Creating a RimWorld mod using a DLL assembly (.dll).
-- Project Goal: Build dark matter generator and animated wind turbine.
+## Assembly Modding Example - Cheat Sheating a RimWorld mBuild dark matter generator and animated wind turbine.
 - Focus: Learning assembly and its program structure.
 - Platform: Windows-only.
 
@@ -30,10 +25,10 @@ alwaysApply: false
 
 1. **Extract:** Downloaded project to chosen folder.
 2. **Copy Assembly-CSharp.dll:**
-   - From: `RimWorld-Folder\RimWorld000Win\RimWorld000Win_Data\Managed\`
+   - From: `RimWorld-Folder\RimWorldWin64_Data\Managed\`
    - To: `YourProjectFolder\RimWorld_ExampleProjectDLL\Source-DLLs\`
-3. **Copy UnityEngine.dll:**
-   - From: `RimWorld-Folder\RimWorld000Win\RimWorld000Win_Data\Managed\`
+3. **Copy UnityEngine.CoreModule.dll:**
+   - From: `RimWorld-Folder\RimWorldWin64_Data\Managed\`
    - To: `YourProjectFolder\RimWorld_ExampleProjectDLL\Source-DLLs\`
 
 **Enter The Project (Visual Studio):**
@@ -43,7 +38,6 @@ alwaysApply: false
 3. **Goal:** Create a dark matter generator mod.
 
 **Note:** Finished mod with power generator included in the project.
-
 
 ```````
 
@@ -220,6 +214,22 @@ catch (TypeLoadException ex) { }
 - `PostDestroy(DestroyMode, Map)`: Called when Thing is destroyed.
 - `CompGetGizmosExtra()`: Adds buttons/icons to selected object.
 - `CompInspectStringExtra()`: Adds information to object inspector.
+
+**CompUseEffect Implementation Notes:**
+- The `CanBeUsedBy` method uses `AcceptanceReport` for its return type
+- Example implementation:
+  ```csharp
+  public override AcceptanceReport CanBeUsedBy(Pawn p)
+  {
+      if (p.Downed)
+      {
+          return "Cannot use: pawn is downed";
+      }
+      return true;
+  }
+  ```
+- Return `true` for success, or a string message for failure
+- This approach combines success/failure status with reason message
 
 ### Comparison with Other Approaches
 
@@ -436,6 +446,13 @@ For detailed information on Harmony, refer to the Harmony Guide.
     ```
     - **Gotcha:** Game component constructor needs `Game` parameter.
 
+**Working with Pawn Lists:**
+- Use standard `List<Pawn>` for saving pawn references in components
+  ```csharp
+  public List<Pawn> savedPawns = new List<Pawn>();
+  ```
+- Pawn lists are automatically serialized when saved in ExposeData
+
 **Overridable Methods:**
 
 - **TYPEComponentUpdate:** Frame update, even when paused. Use for frame-rate dependent updates (visuals), not game logic.
@@ -485,9 +502,7 @@ For detailed information on Harmony, refer to the Harmony Guide.
     - Recommended for compatibility.
 
 - **Transpiler:**
-    - Alters method's IL code (low-level).
-    - Uses `CodeInstructions`, `System.Reflection`, `System.Reflection.Emit`.
-    - Complex, difficult to debug/maintain.
+    - Alters methodl).s`, on`,tiono debug/maintain.
     - Use `Transpiler Hints` guide if necessary.
 
 **Altering Results:**
@@ -642,6 +657,7 @@ For detailed information on Harmony, refer to the Harmony Guide.
     - `PawnUtility`: Pawn-related actions and checks.
     - `MassUtility`: Mass calculations.
     - `Area*`, `Roof*`, `Snow*`: Area, roof, and snow related utilities.
+    - `AggressiveAnimalIncidentUtility`: Handles animal attacks (formerly ManhunterPackIncidentUtility).
 
 - **Maker:** (Classes ending with "Maker") - Object creation and management:
     - Create: `Hediffs`, `Things`, `Lords`, `Zones`, `Sites`, `Filth`.
@@ -652,7 +668,7 @@ For detailed information on Harmony, refer to the Harmony Guide.
 - **Find:** - Game state managers and singletons:
     - `LetterStack`: Letter UI management.
     - `Archive`: Game history and archiving.
-    - `StoryWatcher`: Story event tracking.
+   Story event tracking.
     - `ResearchManager`: Research system management.
     - `World`: World state access.
     - `FactionManager`: Faction management.
@@ -661,11 +677,24 @@ For detailed information on Harmony, refer to the Harmony Guide.
 
 - **Map:** - Map-level data and managers:
     - Access: `ListerBuildings`, `ListerThings`, `LordManagers`, `ZoneManager`.
+    - `MapMeshFlagDef`: Defines mesh flags for map rendering.
+    - `MapMeshFlags`: Static properties for accessing mesh flags.
 
 - **Pawn:** - Pawn data and components:
     - Access: `Health`, `Needs`, `Inventory`, `Jobs`, `Story`, `Equipment`.
+    - **Pawn Rendering:**
+        - `PawnRenderTree`: Node-based rendering system for pawns.
+        - `PawnRenderNode`: Represents a node in the render tree.
+        - `PawnRenderNodeWorker`: Handles rendering logic for nodes.
+        - `PawnRenderNodeProperties`: Data defining how a node renders.
+        - `PawnRenderTreeDef`: Defines a race-specific render tree structure.
+        - `PawnRenderSubWorker`: Additive workers for mod compatibility.
+        - `AnimationDef`: Defines pawn animations.
 
 - **Thing:** - Base game object class.
+    - Important methods:
+        - `DynamicDrawPhaseAt(phase, drawLoc, flip)`: Entry point for parallel rendering.
+        - `DrawAtNow(drawLoc, flip)`: Immediate rendering without parallelism.
 
 - **DefDatabase:** - Def lookup and access:
     - Usage: `DefDatabase<DefType>.GetNamed("defName")`.
@@ -686,6 +715,25 @@ For detailed information on Harmony, refer to the Harmony Guide.
 - **Pair<T1, T2>:** - Generic key-value pair (legacy, consider tuples).
 
 - **Rand:** - Random number generation (use with care in multiplayer).
+
+- **LudeonTK:** - Namespace for debug and utility classes (moved from Verse):
+    - `DebugActionAttribute` (aka `[DebugAction]`)
+    - `DebugActionNode`
+    - `DebugActionType`
+    - Various debug-related classes.
+
+**Building and Item Classes:**
+- `BuildingProperties`: Has `isAttachment` flag for wall-mounted items.
+- `IHaulEnroute`: Interface for items that can be hauled by multiple pawns.
+- `HiddenItemsManager`: Manages undiscovered items with the `<hiddenWhileUndiscovered>` tag.
+- `Building_MultiTileDoor`: Class for ornate doors that span multiple tiles.
+
+**Incident Worker Classes:**
+- `IncidentWorker_AggressiveAnimals`: Handles animal attack incidents (formerly ManhunterPack).
+
+**Important Namespace Locations:**
+- `IngredientValueGetter`: Located in RimWorld namespace.
+- Debug-related classes: Located in LudeonTK namespace.
 
 ```````
 
@@ -828,9 +876,9 @@ private static float exampleFloat = 2000f;
 **Creating a Class:**
 
 - IDE Setup: Use Visual Studio, Rider or other IDEs.
-- Project Type: Class Library (.NET Framework 4.7.2).
+- Project Type: Class Library (.NET Framework 4.8).
 - Output Path: `(RimWorldInstallFolder)/Mods/(YourModName)/Assemblies`.
-- References: Add `Assembly-CSharp.dll`, `UnityEngine.CoreModule.dll`.
+- References: Add `Assembly-CSharp.dll`, `UnityEngine.CoreModule.dll` from `RimWorldWin64_Data\Managed\`.
 - `using` Statements: Import namespaces (e.g., `using System;`, `using RimWorld;`, `using Verse;`).
 - `namespace`: Organize code, prevent naming conflicts. Use unique namespace (e.g., `YourName.YourModName`).
 - Class Definition: `public class MyClassName { ... }`.
@@ -854,6 +902,7 @@ private static float exampleFloat = 2000f;
     - `Verse.AI.Group`: Squad AI.
     - `Verse.Grammar`: Text generation, localization.
     - `UnityEngine`: GUI, Rect, Color.
+    - `LudeonTK`: Debug actions and utility classes moved from Verse.
 
 **Writing Code Workflow:**
 

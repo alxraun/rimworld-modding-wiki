@@ -22,10 +22,10 @@
 
 1. **Extract:** Downloaded project to chosen folder.
 2. **Copy Assembly-CSharp.dll:**
-   - From: `RimWorld-Folder\RimWorld000Win\RimWorld000Win_Data\Managed\`
+   - From: `RimWorld-Folder\RimWorldWin64_Data\Managed\`
    - To: `YourProjectFolder\RimWorld_ExampleProjectDLL\Source-DLLs\`
-3. **Copy UnityEngine.dll:**
-   - From: `RimWorld-Folder\RimWorld000Win\RimWorld000Win_Data\Managed\`
+3. **Copy UnityEngine.CoreModule.dll:**
+   - From: `RimWorld-Folder\RimWorldWin64_Data\Managed\`
    - To: `YourProjectFolder\RimWorld_ExampleProjectDLL\Source-DLLs\`
 
 **Enter The Project (Visual Studio):**
@@ -35,4 +35,3 @@
 3. **Goal:** Create a dark matter generator mod.
 
 **Note:** Finished mod with power generator included in the project.
-

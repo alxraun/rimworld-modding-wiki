@@ -10,7 +10,10 @@ alwaysApply: false
 
 **Purpose:**
 - Report XML configuration errors during RimWorld startup.
-- Inform modder/user of XML issues (missing- Implement `Confied classes.
+- Inform modder/user of XML issues (missing fields, invalid values).
+
+**Usage:**
+- Implement `ConfigErrors()` method in custom Def classes and related classes.
 - Displayed as red errors on game launch.
 
 **Implementation (Def Subclass):**
@@ -143,6 +146,13 @@ public static void ValidateMyTypes()
 - Biotech: `Ludeon.RimWorld.Biotech`
 - Anomaly: `Ludeon.RimWorld.Anomaly`
 - Mod Package IDs: Found in `About.xml` of the mod.
+
+**Core Game Content:**
+- Some content that was previously DLC-exclusive is now available in the base game:
+  - **Skulls**: Skull objects are in Core, although extraction still requires Ideology precepts or Anomaly research.
+  - **Robes**: Apparel is available and craftable without DLCs.
+  - **Combat Stats**: Stats like `MeleeDamageFactor`, `RangedCooldownFactor`, and `StaggerDurationFactor` are available without DLCs.
+  - **Mech Stats**: Some stats like `MechStatBase` (Abstract) and `EMPResistance` can work with either Biotech or Anomaly DLC.
 
 **Usage Contexts:**
 - **List Entries (`<li>`):**
@@ -536,7 +546,9 @@ bool value = def.GetModExtension<YourModExtension>().yourBoolField;
 - `Inherit="False"` for selective inheritance control.
 - Use namespaces to organize code and XML.
 - Be mindful of compatibility when modifying core Defs.
-- When NOT to us: C scoernangCo```
+- When NOT to use Custom Def Classes: Compatibility issues, limited scope, consider alternatives like `ThingComp` and `DefModExtension`. 
+
+```````
 
 `\\?\C:\Projects\rimworld\wiki_workspace\wiki\xml\grammar-resolver-guide.md`:
 
@@ -696,7 +708,8 @@ bool value = def.GetModExtension<YourModExtension>().yourBoolField;
   </BiomeDef>
   ```
 
-**B. "Classy" Pattern (Class Attribute Override):*ult Def class or field class using `Class` attribute.
+**B. "Classy" Pattern (Class Attribute Override):**
+- Overwrite default Def class or field class using `Class` attribute.
 - Useful for Components, GenSteps, etc.
 - Example:
   ```xml
@@ -939,11 +952,15 @@ bool value = def.GetModExtension<YourModExtension>().yourBoolField;
 - **PatchOperationFindMod**: 
   - Conditional operations based on mod/DLC presence
   - Uses mod `name`, not `packageId`
+  - Include DLC names for DLC-specific patches
   - Example:
   ```xml
   <Operation Class="PatchOperationFindMod">
     <mods>
       <li>Royalty</li>
+      <li>Ideology</li>
+      <li>Biotech</li>
+      <li>Anomaly</li>
     </mods>
     <match>
       <!-- Operations if mod is present -->
@@ -1006,6 +1023,10 @@ bool value = def.GetModExtension<YourModExtension>().yourBoolField;
 - **Reference Vanilla XML:** Locate values for patching in game files (`Data` folder)
 - **Test Patches Incrementally:** Start with simple patches and build complexity
 - **Check Player.log:** For patch errors and debugging
+- **Class Name Changes:** Some classes have been renamed in recent versions:
+  - `ManhunterPackIncidentUtility` → `AggressiveAnimalIncidentUtility`
+  - `IncidentWorker_ManhunterPack` → `IncidentWorker_AggressiveAnimals`
+  - If patching incident workers, use the new class names.
 
 ## Common Issues / Troubleshooting:
 
@@ -1021,6 +1042,6 @@ bool value = def.GetModExtension<YourModExtension>().yourBoolField;
 - PatchOperationTest & `<success>` tag in `PatchOperationSequence` are obsolete; use `PatchOperationConditional`
 - `<success>` options: `Always` (suppress errors - generally avoid), `Normal`, `Invert`, `Never`
 - `MayRequire` in `PatchOperationSequence` child operations for conditional loading
-- PatchOperationFindMod uses mod `name`, not `packageId` 
+- PatchOperationFindMod uses mod `name`, not `packageId`
 
 ```````

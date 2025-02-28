@@ -44,6 +44,13 @@
     ```
     - **Gotcha:** Game component constructor needs `Game` parameter.
 
+**Working with Pawn Lists:**
+- Use standard `List<Pawn>` for saving pawn references in components
+  ```csharp
+  public List<Pawn> savedPawns = new List<Pawn>();
+  ```
+- Pawn lists are automatically serialized when saved in ExposeData
+
 **Overridable Methods:**
 
 - **TYPEComponentUpdate:** Frame update, even when paused. Use for frame-rate dependent updates (visuals), not game logic.

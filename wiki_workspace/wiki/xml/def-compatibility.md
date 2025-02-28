@@ -40,6 +40,13 @@
 - Anomaly: `Ludeon.RimWorld.Anomaly`
 - Mod Package IDs: Found in `About.xml` of the mod.
 
+**Core Game Content:**
+- Some content that was previously DLC-exclusive is now available in the base game:
+  - **Skulls**: Skull objects are in Core, although extraction still requires Ideology precepts or Anomaly research.
+  - **Robes**: Apparel is available and craftable without DLCs.
+  - **Combat Stats**: Stats like `MeleeDamageFactor`, `RangedCooldownFactor`, and `StaggerDurationFactor` are available without DLCs.
+  - **Mech Stats**: Some stats like `MechStatBase` (Abstract) and `EMPResistance` can work with either Biotech or Anomaly DLC.
+
 **Usage Contexts:**
 - **List Entries (`<li>`):**
     - Conditional loading of list items based on dependencies.

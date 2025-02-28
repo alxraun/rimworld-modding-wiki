@@ -17,6 +17,7 @@
     - `PawnUtility`: Pawn-related actions and checks.
     - `MassUtility`: Mass calculations.
     - `Area*`, `Roof*`, `Snow*`: Area, roof, and snow related utilities.
+    - `AggressiveAnimalIncidentUtility`: Handles animal attacks (formerly ManhunterPackIncidentUtility).
 
 - **Maker:** (Classes ending with "Maker") - Object creation and management:
     - Create: `Hediffs`, `Things`, `Lords`, `Zones`, `Sites`, `Filth`.
@@ -36,11 +37,24 @@
 
 - **Map:** - Map-level data and managers:
     - Access: `ListerBuildings`, `ListerThings`, `LordManagers`, `ZoneManager`.
+    - `MapMeshFlagDef`: Defines mesh flags for map rendering.
+    - `MapMeshFlags`: Static properties for accessing mesh flags.
 
 - **Pawn:** - Pawn data and components:
     - Access: `Health`, `Needs`, `Inventory`, `Jobs`, `Story`, `Equipment`.
+    - **Pawn Rendering:**
+        - `PawnRenderTree`: Node-based rendering system for pawns.
+        - `PawnRenderNode`: Represents a node in the render tree.
+        - `PawnRenderNodeWorker`: Handles rendering logic for nodes.
+        - `PawnRenderNodeProperties`: Data defining how a node renders.
+        - `PawnRenderTreeDef`: Defines a race-specific render tree structure.
+        - `PawnRenderSubWorker`: Additive workers for mod compatibility.
+        - `AnimationDef`: Defines pawn animations.
 
 - **Thing:** - Base game object class.
+    - Important methods:
+        - `DynamicDrawPhaseAt(phase, drawLoc, flip)`: Entry point for parallel rendering.
+        - `DrawAtNow(drawLoc, flip)`: Immediate rendering without parallelism.
 
 - **DefDatabase:** - Def lookup and access:
     - Usage: `DefDatabase<DefType>.GetNamed("defName")`.
@@ -61,3 +75,22 @@
 - **Pair<T1, T2>:** - Generic key-value pair (legacy, consider tuples).
 
 - **Rand:** - Random number generation (use with care in multiplayer).
+
+- **LudeonTK:** - Namespace for debug and utility classes (moved from Verse):
+    - `DebugActionAttribute` (aka `[DebugAction]`)
+    - `DebugActionNode`
+    - `DebugActionType`
+    - Various debug-related classes.
+
+**Building and Item Classes:**
+- `BuildingProperties`: Has `isAttachment` flag for wall-mounted items.
+- `IHaulEnroute`: Interface for items that can be hauled by multiple pawns.
+- `HiddenItemsManager`: Manages undiscovered items with the `<hiddenWhileUndiscovered>` tag.
+- `Building_MultiTileDoor`: Class for ornate doors that span multiple tiles.
+
+**Incident Worker Classes:**
+- `IncidentWorker_AggressiveAnimals`: Handles animal attack incidents (formerly ManhunterPack).
+
+**Important Namespace Locations:**
+- `IngredientValueGetter`: Located in RimWorld namespace.
+- Debug-related classes: Located in LudeonTK namespace.

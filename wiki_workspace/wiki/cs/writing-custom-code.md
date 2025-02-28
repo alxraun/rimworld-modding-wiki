@@ -8,9 +8,9 @@
 **Creating a Class:**
 
 - IDE Setup: Use Visual Studio, Rider or other IDEs.
-- Project Type: Class Library (.NET Framework 4.7.2).
+- Project Type: Class Library (.NET Framework 4.8).
 - Output Path: `(RimWorldInstallFolder)/Mods/(YourModName)/Assemblies`.
-- References: Add `Assembly-CSharp.dll`, `UnityEngine.CoreModule.dll`.
+- References: Add `Assembly-CSharp.dll`, `UnityEngine.CoreModule.dll` from `RimWorldWin64_Data\Managed\`.
 - `using` Statements: Import namespaces (e.g., `using System;`, `using RimWorld;`, `using Verse;`).
 - `namespace`: Organize code, prevent naming conflicts. Use unique namespace (e.g., `YourName.YourModName`).
 - Class Definition: `public class MyClassName { ... }`.
@@ -34,6 +34,7 @@
     - `Verse.AI.Group`: Squad AI.
     - `Verse.Grammar`: Text generation, localization.
     - `UnityEngine`: GUI, Rect, Color.
+    - `LudeonTK`: Debug actions and utility classes moved from Verse.
 
 **Writing Code Workflow:**
 

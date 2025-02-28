@@ -45,14 +45,18 @@
 
 - `<modVersion>1.0</modVersion>` / `<modVersion IgnoreIfNoMatchingField="True">1.0</modVersion>`
     - Mod version string for personal tracking.
-    - Introduced in RimWorld 1.4.
     - `IgnoreIfNoMatchingField="True"` for older versions compatibility.
 
-- `<modIconPath>Path/To/Icon</modIconPath>` / `<modIconPath IgnoreIfNoMatchingField="True">Path/To/Icon</modIconPath>`
+- `<modIconPath IgnoreIfNoMatchingField="True">Path/To/Icon</modIconPath>`
     - Mod icon path (loading screens).
     - 32x32 PNG, limited colors.
-    - RimWorld 1.5+ auto-loads `About/ModIcon.png`.
-    - `IgnoreIfNoMatchingField="True"` for older versions compatibility.
+
+- **ModIcon.png:**
+    - Simply place a file named `ModIcon.png` in your `About` folder.
+    - Will be automatically loaded during game startup.
+    - Should be small (32x32 or 64x64 pixels).
+    - Avoid too much detail - use flat colors or subtle gradients to prevent compression artifacts.
+    - No XML configuration needed.
 
 - `<url>https://mod-url</url>`
     - Web link for mod info (Steam Workshop, GitHub, etc.).
@@ -100,4 +104,3 @@
 
 - `<incompatibleWithByVersion><v1.4><li>packageId</li></v1.4></incompatibleWithByVersion>`
     - Version-specific `incompatibleWith`.
-

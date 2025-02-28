@@ -69,4 +69,3 @@
 - `Preview.png` max size 1MB for Steam Workshop.
 - `Core` & DLC folders: Similar to mod folders.
 - `Source` folder: For sharing source code; GitHub recommended.
-

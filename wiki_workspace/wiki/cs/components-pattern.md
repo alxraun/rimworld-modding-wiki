@@ -105,6 +105,22 @@
 - `CompGetGizmosExtra()`: Adds buttons/icons to selected object.
 - `CompInspectStringExtra()`: Adds information to object inspector.
 
+**CompUseEffect Implementation Notes:**
+- The `CanBeUsedBy` method uses `AcceptanceReport` for its return type
+- Example implementation:
+  ```csharp
+  public override AcceptanceReport CanBeUsedBy(Pawn p)
+  {
+      if (p.Downed)
+      {
+          return "Cannot use: pawn is downed";
+      }
+      return true;
+  }
+  ```
+- Return `true` for success, or a string message for failure
+- This approach combines success/failure status with reason message
+
 ### Comparison with Other Approaches
 
 **ThingComp vs DefModExtension:**
