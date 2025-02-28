@@ -3,23 +3,9 @@ description: "Core" module Rimworld modding documentation
 globs: 
 alwaysApply: false
 ---
-Project Path: \\?\C:\Projects\rimworld\wiki_workspace\wiki\core
-
-Source Tree:
-
-```
-core
-├── about-xml-guide.md
-├── application-startup-sequence.md
-├── mod-folder-structure.md
-└── modding-fundamentals.md
-
-```
-
 `\\?\C:\Projects\rimworld\wiki_workspace\wiki\core\about-xml-guide.md`:
 
 ```````md
-```markdown
 ## About.xml Cheat Sheet
 
 **Purpose:**
@@ -122,14 +108,13 @@ core
 
 - `<incompatibleWithByVersion><v1.4><li>packageId</li></v1.4></incompatibleWithByVersion>`
     - Version-specific `incompatibleWith`.
-```
+
 
 ```````
 
 `\\?\C:\Projects\rimworld\wiki_workspace\wiki\core\application-startup-sequence.md`:
 
 ```````md
-```markdown
 ## RimWorld Application Startup Sequence - Cheat Sheet
 
 **Root Method:** `Verse.PlayDataLoader.LoadAllPlayData(bool)` (called by `Verse.Root.Start()`)
@@ -176,14 +161,13 @@ core
 38. **Force garbage collection:** Memory cleanup (`RimWorld.IO.AbstractFilesystem.ClearAllCache()`, `System.GC.Collect(...)`).
 
 **Warning:** Do not Harmony patch these methods for custom loading. Use appropriate methods instead. Consult #mod-development on RimWorld Discord for load issue questions.
-```
+
 
 ```````
 
 `\\?\C:\Projects\rimworld\wiki_workspace\wiki\core\mod-folder-structure.md`:
 
 ```````md
-```markdown
 ## Mod Folder Structure - Cheat Sheet
 
 **RimWorld Install Directory Root:**
@@ -255,7 +239,7 @@ core
 - `Preview.png` max size 1MB for Steam Workshop.
 - `Core` & DLC folders: Similar to mod folders.
 - `Source` folder: For sharing source code; GitHub recommended.
-```
+
 
 ```````
 
@@ -332,5 +316,6 @@ core
 - Activation: In-game Mods menu, restart required.
 - Compatibility: Potential conflicts with large mod lists or overlapping mods.
 - Mod Types Impact: Cosmetic (visuals), UI (interface), Game Changes (mechanics). 
+
 
 ```````

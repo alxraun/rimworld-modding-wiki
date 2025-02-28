@@ -1,0 +1,881 @@
+---
+description: "cs" module Rimworld modding documentation
+globs: 
+alwaysApply: false
+---
+`\\?\C:\Projects\rimworld\wiki_workspace\wiki\cs\assembly-modding-example.md`:
+
+```````md
+## Assembly Modding Example - Cheat Sheet
+
+**Description:**
+
+- Tutorial: Creating a RimWorld mod using a DLL assembly (.dll).
+- Project Goal: Build dark matter generator and animated wind turbine.
+- Focus: Learning assembly and its program structure.
+- Platform: Windows-only.
+
+**Needed Tools:**
+
+- IDE: Recommended IDE (e.g., Visual Studio)
+- C# Knowledge: Basic understanding.
+- RimWorld: Base game.
+
+**Download Project:**
+
+- GitHub: [https://github.com/HaploX1/ExampleDllMod](mdc:https:/github.com/HaploX1/ExampleDllMod)
+- Ludeon Forum: [https://ludeon.com/forums/index.php?topic=3408.0](mdc:https:/ludeon.com/forums/index.php?topic=3408.0) (attachment)
+
+**Preparations (Manual Steps):**
+
+1. **Extract:** Downloaded project to chosen folder.
+2. **Copy Assembly-CSharp.dll:**
+   - From: `RimWorld-Folder\RimWorld000Win\RimWorld000Win_Data\Managed\`
+   - To: `YourProjectFolder\RimWorld_ExampleProjectDLL\Source-DLLs\`
+3. **Copy UnityEngine.dll:**
+   - From: `RimWorld-Folder\RimWorld000Win\RimWorld000Win_Data\Managed\`
+   - To: `YourProjectFolder\RimWorld_ExampleProjectDLL\Source-DLLs\`
+
+**Enter The Project (Visual Studio):**
+
+1. **Open Project:** Start Visual Studio and open `<YourExtractionFolder>\RimWorld\_ExampleProjectDLL.sln`.
+2. **Explore:** Project structure and code within Visual Studio.
+3. **Goal:** Create a dark matter generator mod.
+
+**Note:** Finished mod with power generator included in the project.
+
+
+```````
+
+`\\?\C:\Projects\rimworld\wiki_workspace\wiki\cs\code-compatibility.md`:
+
+```````md
+## Code Compatibility - Cheat Sheet
+
+**Objective:** Create compatibility between your mod and another mod's DLL using Harmony (manual patching).
+
+**Requirements:**
+
+- [x] Your Mod
+- [x] Target Mod ("OtherMod")
+- [x] Harmony
+- [x] "Hello World" setup
+- [x] Willingness to create compatibility
+
+**Manual Patching Snippet:**
+
+```csharp
+try
+{
+    ((Action)(() =>
+    {
+        if (LoadedModManager.RunningModsListForReading.Any(x=> x.Name == "OtherMod"))
+        {
+            harmony.Patch(AccessTools.Method(typeof(FullNameSpaceOfSomeOtherMod.SomeClass), nameof(FullNameSpaceOfSomeOtherMod.SomeClass.SomeOtherMethod)),
+                postfix: new HarmonyMethod(typeof(HarmonyPatches), nameof(PatchOnSomeMethodFromSomeOtherMod_PostFix)));
+        }
+    }))();
+}
+catch (TypeLoadException ex) { }
+```
+
+**Explanation:**
+
+- **Purpose:** Patches a method from "OtherMod" DLL conditionally, if "OtherMod" is loaded.
+- **`try-catch` Block:** Handles `TypeLoadException` if "OtherMod" is not present, preventing errors.
+- **Anonymous Delegate & Action:**  Workaround to avoid direct dependency on "OtherMod" at compile time.
+- **`LoadedModManager.RunningModsListForReading.Any(...)`:** Checks if "OtherMod" is in the active mod list.
+- **`harmony.Patch(...)`:** Applies Harmony patch if "OtherMod" is loaded.
+    - `AccessTools.Method(...)`: Gets method info from "OtherMod" using reflection.
+    - `postfix: new HarmonyMethod(...)`: Specifies postfix patch method in `HarmonyPatches` class.
+
+**Constraints Addressed by Snippet:**
+
+- **Optional Mod:** Handles cases where "OtherMod" may or may not be active/present.
+- **No Direct Dependency:** Avoids compile-time dependency on "OtherMod" DLL.
+- **Compiler Optimizations:** Circumvents compiler inlining and JIT behavior issues that can break conditional patching.
+
+**Gotchas:**
+
+- **AssemblyVersion vs. FileVersion (AssemblyFileVersion):**
+    - Avoid referencing specific `AssemblyVersion` of "OtherMod.dll".
+    - Patch against `FileVersion` (AssemblyFileVersion) if possible, or ideally no specific version.
+    - `AssemblyVersion` changes indicate API breaking changes and may break patches.
+- **Reference Updates:**  If "OtherMod" updates `AssemblyVersion`, your patch may break.
+
+**Best Practice:**
+- Use this manual patching approach for optional compatibility with other DLL mods.
+- Prefer patching against `FileVersion` if versioning is needed.
+- Consider not referencing specific versions at all for more robust compatibility.
+
+
+```````
+
+`\\?\C:\Projects\rimworld\wiki_workspace\wiki\cs\components-pattern.md`:
+
+```````md
+## Component Pattern - Cheat Sheet
+
+**Comp Design Pattern:** Modular functionality for RimWorld objects.
+
+### Types of Components (Most Specific to Most Generic):
+
+- **HediffComp:**
+    - Behavior specific to Hediffs (health).
+    - Simple to use.
+    - **When to use:** Pawn's health functionality, Hediff-specific behavior.
+
+- **ThingComp:**
+    - Behavior for specific Things.
+    - Powerful; data storage, special functionality.
+    - Building block of RimWorld modding.
+    - Fewer compatibility issues than custom classes.
+    - **When to use:** Thing-level functionality, item behavior, data storage for Things.
+
+- **WorldObjectComp:**
+    - Behavior for WorldObjects.
+    - Like ThingComp, but for WorldObjects.
+    - **When to use:** WorldObject-level functionality.
+
+- **MapComponent:**
+    - Behavior at the Map level.
+    - Tracks multiple things, data storage, managing entity.
+    - Map-specific functionality.
+    - **When to use:** Map-level tracking, managing multiple entities on a map.
+
+- **WorldComponent:**
+    - Behavior at the World level.
+    - World-wide scope.
+    - **When to use:** World-level tracking, game-world behavior.
+
+- **GameComponent:**
+    - Behavior at the Game level.
+    - Instantiated when a new game starts (tutorial, scenario config, load from main menu).
+    - Game-level scope.
+    - **When to use:** Game-level tracking, game-session behavior.
+
+- **StorytellerComp:**
+    - Behavior for Storytellers.
+    - Storyteller logic.
+    - **When to use:** Storyteller behavior customization.
+
+### Adding Components
+
+**Adding Behavior to Thing Class:**
+- For `ThingWithComps`, use `ThingComp`.
+- `ThingComp`: Modular approach for data storage and functionality.
+- **XML integration:**
+  ```xml
+  <comps>
+    <li Class="YourNamespace.YourCompProperties"/>
+  </comps>
+  ```
+
+**Adding Behavior to Hediff Class:**
+- For `HediffWithComps`, use `HediffComp`.
+- Similar to `ThingComp` but for Hediffs.
+- **XML integration:**
+  ```xml
+  <comps>
+    <li Class="YourNamespace.YourHediffCompProperties"/>
+  </comps>
+  ```
+
+### Component Structure (ThingComp as example)
+
+**C# classes:**
+1. **CompProperties class** - defines static data and XML structure
+   ```csharp
+   public class YourCompProperties : CompProperties
+   {
+       public bool yourProperty = true;
+       
+       public YourCompProperties()
+       {
+           compClass = typeof(YourComp);
+       }
+   }
+   ```
+
+2. **Comp class** - contains logic and instance data
+   ```csharp
+   public class YourComp : ThingComp
+   {
+       public YourCompProperties Props => (YourCompProperties)props;
+       
+       // Override methods
+       public override void CompTick() { /* your code */ }
+       public override void PostSpawnSetup(bool respawningAfterLoad) { /* your code */ }
+       public override void PostExposeData() { /* save data */ }
+       public override IEnumerable<Gizmo> CompGetGizmosExtra() { /* UI elements */ }
+   }
+   ```
+
+**Important methods available for override:**
+- `PostSpawnSetup(bool)`: Called when created or loaded.
+- `CompTick()`: Called every tick (1/60 sec) for active components.
+- `CompTickRare()`: Called every 250 ticks for less frequent updates.
+- `PostExposeData()`: For saving/loading data.
+- `PostDrawExtraSelectionOverlays()`: For drawing overlays.
+- `PostDestroy(DestroyMode, Map)`: Called when Thing is destroyed.
+- `CompGetGizmosExtra()`: Adds buttons/icons to selected object.
+- `CompInspectStringExtra()`: Adds information to object inspector.
+
+### Comparison with Other Approaches
+
+**ThingComp vs DefModExtension:**
+
+**When to use ThingComp:**
+- Need instance-specific data (varies for each Thing instance)
+- Need to hook into tick/update events
+- Need to add functionality to Things (items, pawns, buildings)
+- Need to add UI elements (gizmos, inspectors)
+- Need to save/load data with individual Things
+
+**When to use DefModExtension:**
+- Need global settings for all Things of one Def type
+- Need to add data to non-Thing Defs (RecipeDef, ResearchDef, etc.)
+- Need lightweight data storage without behavior
+- Need to avoid Comp system overhead
+
+**ThingComp vs Harmony:**
+
+**When to use ThingComp:**
+- Adding new functionality to existing Things
+- Storing data for specific instances
+- Modular extension of functionality
+- Prioritizing compatibility with other mods
+
+**When to use Harmony:**
+- Changing existing game behavior
+- Patching specific methods
+- Global behavior changes not tied to specific objects
+- Modifying game-wide algorithms
+
+For detailed information on Harmony, refer to the Harmony Guide.
+
+### Best Practices
+
+- **Performance:** Use `CompTickRare()` instead of `CompTick()` when possible.
+- **Code Clarity:** Follow Single Responsibility Principle, each Comp should do one specific thing.
+- **Compatibility:** Check for other Comps when interacting, don't rely on specific load order.
+- **SaveData:** Always override PostExposeData() to save instance variables.
+- **Cleanup:** Release resources in PostDestroy() if necessary. 
+
+
+```````
+
+`\\?\C:\Projects\rimworld\wiki_workspace\wiki\cs\debug-actions.md`:
+
+```````md
+## DebugActions - Cheat Sheet
+
+**Purpose:**
+- Easily call static methods from debug menu in Development Mode.
+- Available via cog button in debug row.
+
+**Usage:**
+- Add `[DebugAction]` attribute to static methods.
+- Accessible in Debug Actions Menu (Dev Mode).
+
+**`[DebugAction]` Attribute Parameters:**
+- **Category (string):**
+    - Organizes actions in debug menu.
+    - Used for grouping related actions.
+- **Button Label (string):**
+    - Text displayed on the debug button.
+- **`actionType` (DebugActionType enum):**
+    - Determines action execution behavior.
+    - Possible Values:
+        - `Action`: Direct method call, any game state.
+        - `ToolMap`: Mouse targeter, calls method on each map click, map only.
+        - `ToolMapForPawns`: Mouse targeter, calls method on pawn click, passes `Pawn p`, map only.
+        - `ToolWorld`: Mouse targeter, calls method on world tile click, world map only.
+- **`allowedGameStates` (AllowedGameStates enum):**
+    - Game states where DebugAction is visible.
+    - Combinable enum values:
+        - `Invalid`: Never.
+        - `Entry`: Main menu.
+        - `Playing`: After game launch.
+        - `WorldRenderedNow`: After world load.
+        - `IsCurrentlyOnMap`: Map entered.
+        - `HasGameCondition`: Map entered, game condition active.
+        - `PlayingOnMap`: `Playing` AND `IsCurrentlyOnMap`.
+        - `PlayingOnWorld`: `Playing` AND `WorldRenderedNow`.
+
+**`AllowedGameStates` Enum Values:**
+- `Invalid`: Never.
+- `Entry`: Main menu.
+- `Playing`: In game.
+- `WorldRenderedNow`: World loaded.
+- `IsCurrentlyOnMap`: On a map.
+- `HasGameCondition`: Game condition active on map.
+- `PlayingOnMap`: In game and on map.
+- `PlayingOnWorld`: In game and on world map.
+
+**Note:**
+- Decompile RimWorld to find more `DebugAction` examples.
+
+
+```````
+
+`\\?\C:\Projects\rimworld\wiki_workspace\wiki\cs\expose-data.md`:
+
+```````md
+## RimWorld Saving (ExposeData) - Cheat Sheet
+
+**Core Concept:**
+- `ExposeData()` method (override virtual) in classes like `Thing`, `ThingComp`, `HediffComp`, `LordJob`, `JobDriver`.
+- `Scribe` methods within `ExposeData()` for saving individual values.
+
+**General Scribe Method Parameters:**
+- `ref item`: Reference to the variable to save (passed by `ref`).
+- `"label"`: Unique save key (string, appears in save file).
+- Optional parameters: Default value, force save, constructor arguments, etc.
+
+**Saving Data Types:**
+
+- **Simple Values (Scribe_Values.Look):**
+    - Types: `int`, `float`, `bool`, `long`, `double`, `sbyte`, Enums, `string`, `System.Type`, Vector Types, `Rect`, `Color`, `ColorInt`, `Rot4`, `CellRect`, `CurvePoint`, `FloatRange`, `IntRange`, `QualityRange`, `PublishedFileId_t`.
+    - Parameters: `ref value`, `"label"`, `defaultValue` (optional, for loading defaults), `forceSave` (optional, boolean).
+    - Example: `Scribe_Values.Look(ref foo, "foo", 10);` // int foo, default 10 if no save.
+
+- **Defs (Scribe_Defs.Look):**
+    - For: Saving references to Defs.
+    - Parameters: `ref defField`, `"label"`.
+    - Example: `Scribe_Defs.Look(ref myDef, "myDef");`
+
+- **Things (Scribe_Deep.Look, Scribe_References.Look):**
+    - Base class: `Thing` (Pawn, Building, Mote, Plant, etc.).
+    - Two Save Methods:
+        - `Scribe_References.Look`: For `ILoadReferenceable` Things (spawned, saved elsewhere).
+        - `Scribe_Deep.Look`: For `IExposable` Things (not spawned, not saved elsewhere).
+
+    - **Saving IExposable Things (Scribe_Deep.Look):**
+        - For: `IExposable` implementing classes.
+        - Parameters: `ref exposableItem`, `saveDestroyedThings` (optional, boolean), `"label"`, `ctorArgs` (optional, constructor arguments for instantiation).
+        - Example: `Scribe_Deep.Look(ref myExposable, "myExposable");`
+
+    - **Saving ILoadReferenceable Things (Scribe_References.Look):**
+        - For: `ILoadReferenceable` implementing classes (existing in world).
+        - Parameters: `ref referenceableItem`, `"label"`, `saveDestroyedThings` (optional, boolean).
+        - Example: `Scribe_References.Look(ref myReference, "myReference");`
+
+- **TargetInfo (Scribe_TargetInfo.Look):**
+    - For: `TargetInfo`, `LocalTargetInfo`, `GlobalTargetInfo`.
+    - Parameters: `ref targetInfo`, `"label"`, `saveDestroyedThings` (optional, boolean), `defaultValue` (optional, TargetInfo).
+    - Example: `Scribe_TargetInfo.Look(ref myLocation, "target");`
+
+- **Collections (Scribe_Collections.Look):**
+    - For: `List`, `Dictionary`, `HashSet`, `Stack`.
+    - Required: Specify `LookMode` for collection elements.
+    - Dictionaries: If key or value LookMode is `Reference`, provide `ref` lists for keys/values.
+    - Parameters: `ref collection`, `"label"`, `LookMode elementLookMode`, (optional parameters for dictionaries).
+    - Examples:
+        - `Scribe_Collections.Look(ref list1, "list1", LookMode.Value);` // List<string>
+        - `Scribe_Collections.Look(ref dict1, "dict1", LookMode.Value, LookMode.TargetInfo);` // Dictionary<string, LocalTargetInfo>
+        - `Scribe_Collections.Look(ref dict2, "dict2", LookMode.Reference, LookMode.Value, ref list2, ref list3);` // Dictionary<Faction, int> with ref lists for keys and values
+        - `Scribe_Collections.Look(ref stack1, "stack1", LookMode.Reference);` // Stack<Thing>
+
+**Important Notes:**
+-  `label` parameter must be unique within the `ExposeData()` method.
+-  For `Scribe_Values.Look`, default value is set during loading if save key is missing.
+-  For `Scribe_Deep.Look`, constructor arguments can be passed using `ctorArgs`.
+-  `Scribe_References.Look` requires the object to be saved elsewhere.
+-  Collections require specifying `LookMode` for elements. Dictionaries might need additional lists for saving.
+
+
+```````
+
+`\\?\C:\Projects\rimworld\wiki_workspace\wiki\cs\game-component-guide.md`:
+
+```````md
+## GameComponent, WorldComponent, MapComponent - Cheat Sheet
+
+**General Component Info:**
+
+- **Purpose:** Add custom code and functionality at different levels (Game, World, Map).
+- **Implementation:** Inherit from `GameComponent`, `WorldComponent`, or `MapComponent`.
+    - Implement constructor: `public MyComponent(TYPE type) : base(type) { }` (TYPE = Game, World, or Map).
+- **Access:** Use `GetComponent<MyComponent>()` from:
+    - `Current.Game` (GameComponent)
+    - `Find.World` (WorldComponent)
+    - `Find.CurrentMap` or `thing.Map` or `thing.MapHeld` (MapComponent)
+- **Benefits:**
+    - Well-supported by RimWorld.
+    - Save-game compatible (generally).
+    - Global level functionality.
+    - Data saving (`ExposeData`).
+    - RimWorld-driven method calls (e.g., `Update`, `Tick`).
+    - Versatile functionality.
+    - Always accessible.
+- **Downsides:**
+    - Removing mod: Harmless one-time error on load.
+    - No XML-exposed functionality.
+
+**Accessing Components:**
+
+- **MapComponent:**
+    ```csharp
+    thing.Map.GetComponent<MyMapComponent>();         // From a Thing on map
+    thing.MapHeld.GetComponent<MyMapComponent>();     // From ThingHolder
+    Find.CurrentMap.GetComponent<MyMapComponent>();  // From visible map
+
+    // Safe access method:
+    public static MyMapComponent GetMapComponentFor(Map map) { /* null checks & instantiation */ }
+    ```
+
+- **WorldComponent:**
+    ```csharp
+    Find.World.GetComponent<MyWorldComponent>();
+    ```
+
+- **GameComponent:**
+    ```csharp
+    Current.Game.GetComponent<MyGameComponent>();
+    ```
+    - **Gotcha:** Game component constructor needs `Game` parameter.
+
+**Overridable Methods:**
+
+- **TYPEComponentUpdate:** Frame update, even when paused. Use for frame-rate dependent updates (visuals), not game logic.
+- **TYPEComponentTick:** Game tick update. Game logic updates.
+- **TYPEComponentOnGUI:** Frame update, when TYPE is visible. GUI rendering (not WorldComponent).
+- **ExposeData:** Save/load component data.
+- **FinalizeInit:** Called after TYPE instantiation, after constructor. Good for initialization, safer than constructor for error handling.
+- **StartedNewGame:** GameComponent only. On new game start.
+- **LoadedGame:** GameComponent only. On game load.
+- **MapGenerated:** MapComponent only. On map generation.
+- **MapRemoved:** MapComponent only. On map removal.
+
+**Usage Notes:**
+
+- Null checks for `Map` are crucial, especially for MapComponents.
+- Choose component type based on scope (Game > World > Map > Thing).
+- Override methods as needed for desired behavior.
+- For data persistence, implement `ExposeData`.
+
+```````
+
+`\\?\C:\Projects\rimworld\wiki_workspace\wiki\cs\harmony-guide.md`:
+
+```````md
+## Harmony Cheat Sheet
+
+**Harmony:** Runtime patching library for .NET/Mono methods in RimWorld. Best practice for code modification.
+
+**Integration:**
+- Add Harmony as reference to C# project.
+- Do NOT include `0Harmony.dll` in mod's Assemblies.
+- Add Harmony as Steam dependency.
+- Avoid HugsLib for basic Harmony; use only when needing HugsLib features.
+
+**Patch Types:**
+
+- **Prefix:**
+    - Runs **before** original method.
+    - Return type: `void` or `bool`.
+    - `bool` return `false`: Skips original method (use with caution - compatibility risk).
+    - May prevent other prefixes from running.
+
+- **Postfix:**
+    - Runs **after** original method.
+    - Guaranteed execution.
+    - Can alter original method's `__result` (pass by `ref`).
+    - Recommended for compatibility.
+
+- **Transpiler:**
+    - Alters method's IL code (low-level).
+    - Uses `CodeInstructions`, `System.Reflection`, `System.Reflection.Emit`.
+    - Complex, difficult to debug/maintain.
+    - Use `Transpiler Hints` guide if necessary.
+
+**Altering Results:**
+
+- Modify original method's return value:
+    - Postfix method parameter `ref __result`.
+
+**Pitfalls:**
+
+- **Overuse:** Consider alternatives (subclassing, Comps) before Harmony.
+- **Result Not Changed:** Missing `ref` keyword when altering `__result`.
+- **Returning Value from Void/Prefix:** Harmony return type != original method return type. Use `__result` for prefixes to alter outcome.
+- **Incorrect Method Patch:** Use `AccessTools.Method` or `System.Reflection.MethodInfo` for accurate method specification, especially for overloaded methods.
+- **Patch Not Applying:**
+    - Check `HarmonyInstance.DEBUG = true` & Harmony log file.
+    - Bootstrap order: `StaticConstructorOnStartup` for early patches.
+    - Inlining: Patched method might be inlined; harder to patch.
+
+**Bootstrapping:**
+
+- Initialize Harmony in `[StaticConstructorOnStartup]` class.
+- Use `Harmony.PatchAll()` or manual patching within static constructor.
+
+**Links:**
+
+- [Harmony Mod (Steam)](mdc:https:/steamcommunity.com/workshop/filedetails/?id=2009463077)
+- [Harmony 2 Releases (GitHub)](mdc:https:/github.com/pardeike/Harmony/releases)
+- [Harmony 2 NuGet](mdc:https:/www.nuget.org/packages/Lib.Harmony)
+- [Harmony 2 Docs](mdc:https:/harmony.pardeike.net)
+- [Alien Races HarmonyPatches Example](mdc:https:/github.com/RimWorld-CCL-Reborn/AlienRaces/blob/master/Source/AlienRace/AlienRace/HarmonyPatches.cs)
+
+```````
+
+`\\?\C:\Projects\rimworld\wiki_workspace\wiki\cs\mod-settings-guide.md`:
+
+```````md
+## ModSettings - Cheat Sheet
+
+**Purpose:**
+
+- Provide customizable options for your mod users in-game.
+
+**Setup:**
+
+- Two classes required:
+    - `ModSettings` class: Stores setting data.
+    - `Mod` class: Handles settings GUI and loading/saving.
+
+**Code Structure:**
+
+- **ExampleSettings (Subclass of `ModSettings`):**
+    ```csharp
+    public class ExampleSettings : ModSettings
+    {
+        public bool exampleBool;
+        public float exampleFloat = 200f;
+        public List<Pawn> exampleListOfPawns = new List<Pawn>();
+
+        public override void ExposeData() // For saving settings
+        {
+            Scribe_Values.Look(ref exampleBool, "exampleBool");
+            Scribe_Values.Look(ref exampleFloat, "exampleFloat", 200f);
+            Scribe_Collections.Look(ref exampleListOfPawns, "exampleListOfPawns", LookMode.Reference);
+            base.ExposeData();
+        }
+    }
+    ```
+    - `ExposeData()`:  Saves/loads settings to disk using `Scribe_Values`, `Scribe_Collections`, etc.
+
+- **ExampleMod (Subclass of `Mod`):**
+    ```csharp
+    public class ExampleMod : Mod
+    {
+        ExampleSettings settings; // Reference to settings
+
+        public ExampleMod(ModContentPack content) : base(content) // Mandatory constructor
+        {
+            this.settings = GetSettings<ExampleSettings>();
+        }
+
+        public override void DoSettingsWindowContents(Rect inRect) // GUI for settings (optional)
+        {
+            Listing_Standard listingStandard = new Listing_Standard();
+            listingStandard.Begin(inRect);
+            listingStandard.CheckboxLabeled("Bool Setting", ref settings.exampleBool, "Tooltip");
+            listingStandard.Label("Float Setting");
+            settings.exampleFloat = listingStandard.Slider(settings.exampleFloat, 100f, 300f);
+            listingStandard.End();
+            base.DoSettingsWindowContents(inRect);
+        }
+
+        public override string SettingsCategory() // Makes settings visible in menu (required)
+        {
+            return "Mod Name"; // Use .Translate() for localization
+        }
+    }
+    ```
+    - Constructor (`ExampleMod(ModContentPack content)`): Resolves settings reference: `settings = GetSettings<ExampleSettings>();`
+    - `DoSettingsWindowContents(Rect inRect)`:  Creates settings GUI using `Listing_Standard` or `Widgets`.
+        - `Listing_Standard`: Basic GUI layout, uses `Begin()` and `End()`.
+        - `Widgets`: More control, manual Rect positioning.
+    - `SettingsCategory()`:  Returns mod name to display in settings menu (non-empty string required).
+
+**Saving Settings:**
+
+- Automatic: On window close.
+- Optional: Override `WriteSettings()` for custom save behavior.
+
+**Accessing Settings:**
+
+- Non-static (instance-based):
+    ```csharp
+    LoadedModManager.GetMod<ExampleMod>().GetSettings<ExampleSettings>().settingName
+    ```
+- Recommended: Store settings reference in `Mod` class for easier access.
+
+**HugsLib vs Vanilla ModSettings:**
+
+- Vanilla ModSettings: Sufficient for most cases, no external dependency.
+- HugsLib: Offers alternative settings implementation (not necessary for basic settings).
+
+**Key Classes:**
+
+- `ModSettings`: Base class for settings data.
+- `Mod`: Base class for mod, handles settings GUI and loading.
+- `Listing_Standard`: Basic GUI layout class.
+- `Widgets`: Alternative GUI class with more control.
+- `Rect`: Unity struct for GUI element positioning.
+- `Translator`: For localization (`"StringKey".Translate()`).
+
+```````
+
+`\\?\C:\Projects\rimworld\wiki_workspace\wiki\cs\rimworld-classes-reference.md`:
+
+```````md
+## Useful RimWorld Classes for Modders - Cheat Sheet
+
+**Requirements:**
+- Decompiler (ILSpy, dnSpy, Rider/dotPeek) for exploring game code.
+
+**Class Categories:**
+
+- **Gen:** (Classes starting with "Gen") - General utility, extension methods for:
+    - `GenDate`, `GenLocalDate`: Time-related operations.
+    - `GenDraw`: Drawing and graphics.
+    - `GenAdj`: Grid and adjacency calculations.
+    - `GenText`: Text manipulation (less recommended, use LINQ).
+
+- **Utility:** (Classes ending with "Utility") - Task-specific utilities:
+    - `FoodUtility`: Food consumption and handling.
+    - `RestUtility`: Rest and sleep management.
+    - `PawnUtility`: Pawn-related actions and checks.
+    - `MassUtility`: Mass calculations.
+    - `Area*`, `Roof*`, `Snow*`: Area, roof, and snow related utilities.
+
+- **Maker:** (Classes ending with "Maker") - Object creation and management:
+    - Create: `Hediffs`, `Things`, `Lords`, `Zones`, `Sites`, `Filth`.
+
+- **Tuning:** (Classes ending in "Tuning") - Game constants:
+    - Reference: Game balance and tuning values (not for dynamic value access).
+
+- **Find:** - Game state managers and singletons:
+    - `LetterStack`: Letter UI management.
+    - `Archive`: Game history and archiving.
+    - `StoryWatcher`: Story event tracking.
+    - `ResearchManager`: Research system management.
+    - `World`: World state access.
+    - `FactionManager`: Faction management.
+
+- **PawnsFinder:** - Pawn lookup and filtering.
+
+- **Map:** - Map-level data and managers:
+    - Access: `ListerBuildings`, `ListerThings`, `LordManagers`, `ZoneManager`.
+
+- **Pawn:** - Pawn data and components:
+    - Access: `Health`, `Needs`, `Inventory`, `Jobs`, `Story`, `Equipment`.
+
+- **Thing:** - Base game object class.
+
+- **DefDatabase:** - Def lookup and access:
+    - Usage: `DefDatabase<DefType>.GetNamed("defName")`.
+
+- **CellFinder:** - Map cell searching and filtering.
+
+- **Command:** - UI command framework (like Gizmos).
+
+- **Listing_Standard:** - Basic UI layout for settings and lists.
+
+- **Gizmo:** - In-game UI elements (buttons, icons).
+
+- **BoolUnknown:** - Nullable boolean type.
+
+- **LoadedModManager:** - Mod loading and management:
+    - Access: `LoadedModManager.RunningModsListForReading` (get loaded mods).
+
+- **Pair<T1, T2>:** - Generic key-value pair (legacy, consider tuples).
+
+- **Rand:** - Random number generation (use with care in multiplayer).
+
+```````
+
+`\\?\C:\Projects\rimworld\wiki_workspace\wiki\cs\transpiler-hints.md`:
+
+```````md
+## Transpiler Hints - Cheat Sheet
+
+**Debugging Transpilers:**
+
+- Transpiler debugging is complex due to IL code manipulation.
+- Counting instructions accurately is crucial to avoid exceptions.
+
+**Helpful Examples:**
+
+- Search GitHub for "Rimworld Harmony Transpiler" to find community examples.
+  - [GitHub Search Link](mdc:https:/github.com/search?o=desc&q=Rimworld+Harmony+Transpiler&s=indexed&type=Code)
+
+**Debugging Tools:**
+
+- **IL Code Printing:**  Use code snippet to output modified IL code for inspection.
+
+**Debugging Code Snippet:**
+
+```csharp
+public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+{
+    var l = XTranspiler(instructions, generator).ToList(); // Actual transpiler: XTranspiler
+    string s = "Code:";
+    int i = 0;
+    foreach (var c in l)
+    {
+        if (c.opcode == OpCodes.Call || c.opcode == OpCodes.Callvirt)
+        {
+            Log.Warning("" + i + ": " + c); // Highlight Call/Callvirt operations
+        }
+        else
+        {
+            Log.Message("" + i + ": " + c);
+        }
+        s += "\n" + i + ": " + c;
+        i++;
+        yield return c;
+    }
+    Log.Error(s); // Full code output for text editor analysis
+}
+```
+
+**Snippet Explanation:**
+
+- `XTranspiler()`: Replace with your actual transpiler method name.
+- `ToList()`: Converts `IEnumerable` to `List` for easier iteration.
+- `Log.Warning()`: Highlights `Call` and `Callvirt` opcodes in output.
+- `Log.Message()`: Standard output for other opcodes.
+- `Log.Error(s)`: Outputs complete IL code as error log for easy copying.
+- `yield return c`: Returns original `CodeInstruction` after logging.
+
+**Usage Tip:**
+
+- Utilize the provided code snippet to output and analyze generated IL code.
+- Inspect the output for correctness, especially instruction counting and opcode sequences.
+- Search GitHub for example transpilers to understand implementation patterns.
+
+```````
+
+`\\?\C:\Projects\rimworld\wiki_workspace\wiki\cs\tweak-value.md`:
+
+```````md
+## TweakValue - Cheat Sheet
+
+**Purpose:**
+
+- Run-time value modification.
+- Direct in-game value tweaking without recompiling.
+- Ideal for UI adjustments and iterative value testing.
+
+**Applicable Fields:**
+
+- `static` fields only.
+- Non-`constant` and non-`readonly`.
+- Data types: `float`, `bool`, `int`, `ushort`.
+
+**Usage:**
+
+- Access via Dev-Mode "TweakValues" button (dashes and dots icon).
+- Adjust values using sliders in the TweakValues window.
+- Changes are temporary, not saved on game close.
+- Note down good values for permanent mod implementation.
+
+**Syntax:**
+
+```csharp
+[TweakValue("categoryName", minVal, maxVal)]
+private static dataType fieldName = defaultValue;
+```
+
+- `[TweakValue("categoryName", minVal, maxVal)]`: Attribute annotation.
+    - `"categoryName"`: String for grouping in TweakValues window.
+    - `minVal`, `maxVal`: Optional min/max values for slider (defaults: 0, 100).
+- `private static dataType fieldName`:  Field declaration.
+    - `static`: Required for TweakValue to work.
+    - `private`: Recommended for encapsulation (can be `public` or `protected`).
+    - `dataType`: `float`, `bool`, `int`, or `ushort`.
+    - `fieldName`: Field name.
+    - `defaultValue`: Initial value.
+
+**Example:**
+
+```csharp
+#if DEBUG // Recommended: Conditional compilation for debug builds only
+[TweakValue("UI_Tweaks", -100f, 4000f)]
+#endif
+private static float exampleFloat = 2000f;
+```
+
+**Tips:**
+
+- Use `#if DEBUG` or comments for release builds to prevent TweakValue spam.
+- Categorize TweakValues with descriptive `categoryName` strings for organization in the TweakValues window (alphabetical order).
+- Use prefixes like `AAA` to group related values at the top of the TweakValues list.
+- Document good TweakValue settings as they are not persistent.
+
+**Related Tools (Links not included):**
+
+- Method Reloader
+- Texture Reloader
+
+```````
+
+`\\?\C:\Projects\rimworld\wiki_workspace\wiki\cs\writing-custom-code.md`:
+
+```````md
+## Writing Custom Code - Cheat Sheet
+
+**Purpose:**
+
+- Extend RimWorld functionality beyond XML.
+- Create standalone C# classes or Harmony patches.
+
+**Creating a Class:**
+
+- IDE Setup: Use Visual Studio, Rider or other IDEs.
+- Project Type: Class Library (.NET Framework 4.7.2).
+- Output Path: `(RimWorldInstallFolder)/Mods/(YourModName)/Assemblies`.
+- References: Add `Assembly-CSharp.dll`, `UnityEngine.CoreModule.dll`.
+- `using` Statements: Import namespaces (e.g., `using System;`, `using RimWorld;`, `using Verse;`).
+- `namespace`: Organize code, prevent naming conflicts. Use unique namespace (e.g., `YourName.YourModName`).
+- Class Definition: `public class MyClassName { ... }`.
+- Constructor: `public MyClassName() { ... }` - Initialize class instances.
+
+**Namespaces (Useful):**
+
+- **General:**
+    - `System.Collections.Generic`: `List<>`, `Dictionary<>`, `IEnumerable<>`.
+    - `System.Linq`: LINQ operations (`.Where()`, etc.).
+    - `System.Text.RegularExpressions`: RegEx for string manipulation.
+    - `System.Collections`: `IEnumerable` interface.
+    - `System.Text`: `StringBuilder` for efficient string building.
+
+- **RimWorld Specific:**
+    - `RimWorld`: Core RimWorld classes.
+    - `Verse`: Base game classes, general game functionality.
+    - `RimWorld.BaseGen`: Settlement generation.
+    - `RimWorld.Planet`: World-related classes.
+    - `Verse.AI`: Pawn AI, Jobs.
+    - `Verse.AI.Group`: Squad AI.
+    - `Verse.Grammar`: Text generation, localization.
+    - `UnityEngine`: GUI, Rect, Color.
+
+**Writing Code Workflow:**
+
+1. **Decompile Source Code:** Examine existing game code for reference.
+2. **Compile to DLL:** Use IDE (Build/Compile) to create `.dll` in `Assemblies` folder.
+3. **Reference in XML (Optional):** Link C# code to XML Defs using `<thingClass>`, `<compClass>`, etc.
+    - Example: `ThingDef` with custom `thingClass` pointing to C# class.
+4. **Test in Game:** Run RimWorld; custom classes should load.
+
+**Examples (Quick Start):**
+
+- Hello World Mod: Basic C# mod for testing setup.
+- Assembly Modding Example: Small modding project example.
+- Plague Gun Tutorial: Step-by-step guide for a weapon mod (more complex).
+
+**Key Points:**
+
+- Namespaces: Crucial for code organization and preventing conflicts.
+- `using` Directives: Simplify code by importing namespaces.
+- Constructors: Initialize class instances.
+- C# & XML Linking: Bridge between code and content definition.
+- Debugging: Use decompiled code for reference; ask for help in modding communities.
+- Compilation: Ensure correct .NET Framework and output settings.
+
+```````
