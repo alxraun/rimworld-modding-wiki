@@ -1,7 +1,7 @@
 ---
 description: "cs" module Rimworld modding documentation
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
 `\\?\C:\Projects\rimworld\wiki_workspace\wiki\cs\assembly-modding-example.md`:
 
