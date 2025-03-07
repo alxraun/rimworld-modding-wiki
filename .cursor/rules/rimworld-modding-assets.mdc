@@ -1,7 +1,7 @@
 ---
 description: "Assets" module Rimworld modding documentation
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
 `\\?\C:\Projects\rimworld\wiki_workspace\wiki\assets\assets-tutorial.md`:
 

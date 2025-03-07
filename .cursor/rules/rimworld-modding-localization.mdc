@@ -1,7 +1,7 @@
 ---
 description: "localization" module Rimworld modding documentation
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
 `\\?\C:\Projects\rimworld\wiki_workspace\wiki\localization\localization-guide.md`:
 

@@ -1,7 +1,7 @@
 ---
 description: "testing" module Rimworld modding documentation
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
 `\\?\C:\Projects\rimworld\wiki_workspace\wiki\testing\testing-mods-guide.md`:
 
