@@ -98,9 +98,6 @@ catch (TypeLoadException ex) { }
 - Prefer patching against `FileVersion` if versioning is needed.
 - Consider not referencing specific versions at all for more robust compatibility.
 
-### Links and Resources
-- **Harmony 2 Docs:** [https://harmony.pardeike.net](mdc:https:/harmony.pardeike.net)
-
 ## Transpiler Hints
 
 **Debugging Transpilers:**
